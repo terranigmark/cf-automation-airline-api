@@ -74,3 +74,12 @@ class PaymentOut(BaseModel):
     id: str
     booking_id: str
     status: PaymentStatus
+
+# ---------- AIRCRAFTS ----------
+class AircraftCreate(BaseModel):
+    tail_number: str = Field(min_length=5, max_length=10)
+    model: str
+    capacity: int
+
+class AircraftOut(AircraftCreate):
+    id: str

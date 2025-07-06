@@ -1,7 +1,7 @@
 # cf-automation-airline-api
 
 ## Descripción
-Este proyecto es una API de demostración construida con **FastAPI** que simula la gestión de una aerolínea. Permite registrar usuarios, administrar vuelos, realizar reservas y pagos. La información se almacena en memoria, por lo que es ideal para fines educativos o pruebas locales.
+Este proyecto es una API de demostración construida con **FastAPI** que simula la gestión de una aerolínea. Permite registrar usuarios, administrar vuelos, manejar aeronaves, realizar reservas y pagos. La información se almacena en memoria, por lo que es ideal para fines educativos o pruebas locales.
 
 Se incluye un usuario administrador predefinido:
 
@@ -57,7 +57,7 @@ curl http://localhost:8000/bookings \
   -H "Authorization: Bearer <access_token>"
 ```
 
-Consulta `/docs` para ver todos los endpoints disponibles, incluyendo la creación de vuelos, aeropuertos, reservas y pagos.
+Consulta `/docs` para ver todos los endpoints disponibles, incluyendo la creación de vuelos, aeropuertos, aeronaves, reservas y pagos.
 
 ## Contribuciones
 Este proyecto es solo para demostración. Cualquier mejora o corrección es bienvenida mediante pull requests.

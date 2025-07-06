@@ -21,6 +21,7 @@ DB: Dict[str, Dict[str, Dict]] = {
     "users": {},
     "airports": {},
     "flights": {},
+    "aircrafts": {},
     "bookings": {},
     "payments": {},
 }
