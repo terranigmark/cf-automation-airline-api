@@ -58,6 +58,7 @@ curl http://localhost:8000/bookings \
 ```
 
 Consulta `/docs` para ver todos los endpoints disponibles, incluyendo la creación de vuelos, aeropuertos, aeronaves, reservas y pagos.
+Los vuelos ahora requieren asociar una aeronave mediante el campo `aircraft_id`.
 
 ## Contribuciones
 Este proyecto es solo para demostración. Cualquier mejora o corrección es bienvenida mediante pull requests.
