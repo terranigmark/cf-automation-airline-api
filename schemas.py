@@ -42,6 +42,7 @@ class FlightCreate(BaseModel):
     departure_time: datetime
     arrival_time: datetime
     base_price: float
+    aircraft_id: str
 
 class FlightOut(FlightCreate):
     id: str

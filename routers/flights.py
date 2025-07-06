@@ -5,10 +5,15 @@ import models, schemas, deps
 router = APIRouter(prefix="/flights", tags=["Flights"])
 
 @router.post("", response_model=schemas.FlightOut, status_code=201)
-def create_flight(flight: schemas.FlightCreate, _: dict = Depends(deps.require_admin)):
+def create_flight(
+    flight: schemas.FlightCreate, _: dict = Depends(deps.require_admin)
+):
+    if flight.aircraft_id not in models.DB["aircrafts"]:
+        raise HTTPException(status_code=404, detail="Aircraft not found")
     fid = models.generate_id("flt")
     data = flight.dict()
-    data |= {"id": fid, "available_seats": 150}
+    capacity = models.DB["aircrafts"][flight.aircraft_id]["capacity"]
+    data |= {"id": fid, "available_seats": capacity}
     models.DB["flights"][fid] = data
     return data
 
@@ -40,7 +45,13 @@ def update_flight(flight_id: str, patch: schemas.FlightCreate, _: dict = Depends
     fl = models.DB["flights"].get(flight_id)
     if not fl:
         raise HTTPException(status_code=404)
-    fl.update(patch.dict(exclude_unset=True))
+    changes = patch.dict(exclude_unset=True)
+    if "aircraft_id" in changes:
+        if changes["aircraft_id"] not in models.DB["aircrafts"]:
+            raise HTTPException(status_code=404, detail="Aircraft not found")
+        capacity = models.DB["aircrafts"][changes["aircraft_id"]]["capacity"]
+        fl["available_seats"] = capacity
+    fl.update(changes)
     return fl
 
 @router.delete("/{flight_id}", status_code=204)
