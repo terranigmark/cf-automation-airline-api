@@ -15,7 +15,8 @@ def seed_airports(n=100):
             "city": faker.city(),
             "country": faker.country(),
         }
-    print("Airports seeded")
+        print(f"{_} Airports seeded")
+    print("All airports seeded")
 
 
 def seed_aircrafts(n=50):
@@ -30,7 +31,8 @@ def seed_aircrafts(n=50):
             "model": f"{faker.word()} {random.randint(100, 999)}",
             "capacity": random.randint(100, 300),
         }
-    print("Aircrafts seeded")
+        print(f"{_} Aircrafts seeded")
+    print("All aircrafts seeded")
     return ids
 
 
@@ -54,10 +56,11 @@ def seed_flights(aircraft_ids, n=1000):
             "aircraft_id": aid,
             "available_seats": capacity,
         }
-    print("Flights seeded")
+        print(f"{_} Flights seeded")
+    print("All flights seeded")
 
 
-def seed_users(n=10000):
+def seed_users(n=300):
     print(f"Seeding {n} users...")
     for _ in range(n):
         uid = models.generate_id("usr")
@@ -68,7 +71,8 @@ def seed_users(n=10000):
             "full_name": faker.name(),
             "role": models.Role.passenger,
         }
-    print("Users seeded")
+        print(f"{_} Users seeded")
+    print("All users seeded")
 
 
 def seed_bookings(n=7000):
@@ -90,7 +94,8 @@ def seed_bookings(n=7000):
                 }
             ],
         }
-    print("Bookings seeded")
+        print(f"{_} Bookings seeded")
+    print("All bookings seeded")
 
 
 def seed_payments(n=5000):
@@ -105,7 +110,8 @@ def seed_payments(n=5000):
             "status": models.PaymentStatus.success,
         }
         models.DB["bookings"][bid]["status"] = models.BookingStatus.paid
-    print("Payments seeded")
+        print(f"{bid} Payments seeded")
+    print("All payments seeded")
 
 
 def seed_all():
