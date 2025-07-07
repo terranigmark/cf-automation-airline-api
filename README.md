@@ -60,5 +60,18 @@ curl http://localhost:8000/bookings \
 Consulta `/docs` para ver todos los endpoints disponibles, incluyendo la creación de vuelos, aeropuertos, aeronaves, reservas y pagos.
 Los vuelos ahora requieren asociar una aeronave mediante el campo `aircraft_id`.
 
+## Generación de datos de ejemplo
+Para poblar la base de datos en memoria con datos ficticios puedes ejecutar el script `seed.py`:
+
+```bash
+python seed.py
+```
+Este script utiliza la biblioteca **Faker** para generar:
+- 100 aeropuertos
+- 1000 vuelos
+- 10000 usuarios
+- 7000 reservas
+- 5000 pagos
+
 ## Contribuciones
 Este proyecto es solo para demostración. Cualquier mejora o corrección es bienvenida mediante pull requests.
