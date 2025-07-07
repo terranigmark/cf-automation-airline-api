@@ -120,3 +120,4 @@ def seed_all():
 
 if __name__ == "__main__":
     seed_all()
+    print("Fake data generated")
