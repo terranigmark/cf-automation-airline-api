@@ -1,3 +1,4 @@
+import seed
 from fastapi import FastAPI
 from routers import auth, users, airports, flights, bookings, payments, aircrafts
 import models, deps
@@ -35,3 +36,7 @@ app.include_router(aircrafts.router)
 @app.get("/")
 def root():
     return {"msg": "Airline API up & running"}
+
+@app.on_event("startup")
+async def run_seed_if_needed():
+    await seed.seed_all()
