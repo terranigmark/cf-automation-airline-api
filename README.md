@@ -68,8 +68,9 @@ python seed.py
 ```
 Este script utiliza la biblioteca **Faker** para generar:
 - 100 aeropuertos
+- 50 aeronaves
 - 1000 vuelos
-- 10000 usuarios
+- 200 usuarios
 - 7000 reservas
 - 5000 pagos
 
