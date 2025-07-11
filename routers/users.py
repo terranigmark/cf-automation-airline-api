@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 import models, schemas, deps
+import glitches
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
@@ -16,16 +17,16 @@ def create_user_as_admin(
     user_dict["id"] = uid
     user_dict["password"] = deps.hash_password(user_in.password)
     models.DB["users"][uid] = user_dict
-    return schemas.UserOut(**user_dict)
+    return glitches.maybe_corrupt_user(dict(user_dict))
 
 @router.get("", response_model=list[schemas.UserOut])
 def list_users(p: dict = Depends(deps.pagination), _: dict = Depends(deps.require_admin)):
     users = list(models.DB["users"].values())[p["skip"]: p["skip"] + p["limit"]]
-    return users
+    return [glitches.maybe_corrupt_user(dict(u)) for u in users]
 
 @router.get("/me", response_model=schemas.UserOut)
 def me(user: dict = Depends(deps.get_current_user)):
-    return user
+    return glitches.maybe_corrupt_user(dict(user))
 
 @router.put("/{user_id}", response_model=schemas.UserOut)
 def update_user(user_id: str, patch: schemas.UserCreate, current: dict = Depends(deps.get_current_user)):
@@ -35,7 +36,7 @@ def update_user(user_id: str, patch: schemas.UserCreate, current: dict = Depends
     if not user:
         raise HTTPException(status_code=404)
     user.update(patch.dict(exclude_unset=True))
-    return user
+    return glitches.maybe_corrupt_user(dict(user))
 
 @router.delete("/{user_id}", status_code=204)
 def delete_user(user_id: str, _: dict = Depends(deps.require_admin)):
