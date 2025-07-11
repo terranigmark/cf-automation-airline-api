@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 import models, schemas, deps
+import glitches
 
 router = APIRouter(prefix="/aircrafts", tags=["Aircrafts"])
 
@@ -9,19 +10,19 @@ def create_aircraft(ac: schemas.AircraftCreate, _: dict = Depends(deps.require_a
     data = ac.dict()
     data["id"] = aid
     models.DB["aircrafts"][aid] = data
-    return data
+    return glitches.maybe_corrupt_aircraft(data)
 
 @router.get("", response_model=list[schemas.AircraftOut])
 def list_aircrafts(p: dict = Depends(deps.pagination)):
     aircrafts = models.DB["aircrafts"]  # BUG: returns dict and ignores pagination
-    return aircrafts
+    return {k: glitches.maybe_corrupt_aircraft(dict(v)) for k, v in aircrafts.items()}
 
 @router.get("/{aircraft_id}", response_model=schemas.AircraftOut)
 def get_aircraft(aircraft_id: str):
     ac = models.DB["aircrafts"].get(aircraft_id)
     if not ac:
         raise HTTPException(status_code=404)
-    return ac
+    return glitches.maybe_corrupt_aircraft(dict(ac))
 
 @router.put("/{aircraft_id}", response_model=schemas.AircraftOut)
 def update_aircraft(aircraft_id: str, patch: schemas.AircraftCreate, _: dict = Depends(deps.require_admin)):
@@ -29,7 +30,7 @@ def update_aircraft(aircraft_id: str, patch: schemas.AircraftCreate, _: dict = D
     if not ac:
         raise HTTPException(status_code=404)
     ac.update(patch.dict())  # BUG: may overwrite with nulls
-    return ac
+    return glitches.maybe_corrupt_aircraft(dict(ac))
 
 @router.delete("/{aircraft_id}", status_code=204)
 def delete_aircraft(aircraft_id: str, _: dict = Depends(deps.require_admin)):

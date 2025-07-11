@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 import models, deps, seed
-from routers import auth, users, airports, flights, bookings, payments, aircrafts
+from routers import auth, users, airports, flights, bookings, payments, aircrafts, glitch_examples
 
 # ---------- Lifespan ---------- #
 @asynccontextmanager
@@ -42,6 +42,7 @@ app.include_router(flights.router)
 app.include_router(bookings.router)
 app.include_router(payments.router)
 app.include_router(aircrafts.router)
+app.include_router(glitch_examples.router)
 
 
 @app.get("/")
