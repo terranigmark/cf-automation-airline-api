@@ -60,7 +60,7 @@ def seed_flights(aircraft_ids, n=1000):
     print("All flights seeded")
 
 
-def seed_users(n=300):
+def seed_users(n=200):
     print(f"Seeding {n} users...")
     for _ in range(n):
         uid = models.generate_id("usr")
@@ -103,6 +103,7 @@ def seed_payments(n=5000):
     booking_ids = list(models.DB["bookings"].keys())
     paid_bookings = random.sample(booking_ids, n)
     for bid in paid_bookings:
+        i = 0
         pid = models.generate_id("pay")
         models.DB["payments"][pid] = {
             "id": pid,
@@ -110,6 +111,7 @@ def seed_payments(n=5000):
             "status": models.PaymentStatus.success,
         }
         models.DB["bookings"][bid]["status"] = models.BookingStatus.paid
+        i += 1
         print(f"{bid} Payments seeded")
     print("All payments seeded")
 
