@@ -58,7 +58,7 @@ curl http://localhost:8000/bookings \
 ```
 
 Consulta `/docs` para ver todos los endpoints disponibles, incluyendo la creación de vuelos, aeropuertos, aeronaves, reservas y pagos.
-Los vuelos ahora requieren asociar una aeronave mediante el campo `aircraft_id`.
+Los vuelos ahora requieren asociar una aeronave mediante el campo `aircraft_id` y cuentan con el campo `available_seats` para indicar los asientos libres. Al crear una reserva se asigna un `seat` a cada pasajero registrado.
 
 ## Generación de datos de ejemplo
 Para poblar la base de datos en memoria con datos ficticios puedes ejecutar el script `seed.py`:
@@ -66,13 +66,22 @@ Para poblar la base de datos en memoria con datos ficticios puedes ejecutar el s
 ```bash
 python seed.py
 ```
-Este script utiliza la biblioteca **Faker** para generar:
-- 100 aeropuertos
-- 50 aeronaves
-- 1000 vuelos
-- 200 usuarios
-- 7000 reservas
-- 5000 pagos
+Este script utiliza la biblioteca **Faker** para generar un conjunto reducido de datos por defecto:
+- 20 aeropuertos
+- 10 aeronaves
+- 200 vuelos
+- 50 usuarios
+- 300 reservas
+- 200 pagos
+Puedes aumentar estas cantidades definiendo la variable de entorno `FAST_SEED=false` antes de ejecutarlo.
+
+Cada tipo de entidad incluye la siguiente información principal:
+- **Aeropuertos**: código IATA, ciudad y país.
+- **Aeronaves**: matrícula (`tail_number`), modelo y capacidad de pasajeros.
+- **Vuelos**: aeropuertos de origen y destino, horarios, precio base, aeronave asignada y asientos disponibles.
+- **Usuarios**: correo electrónico, contraseña encriptada y nombre completo.
+- **Reservas**: vuelo, usuario, estado y lista de pasajeros con nombre, pasaporte y asiento.
+- **Pagos**: reserva asociada y estado del pago.
 
 ## Contribuciones
 Este proyecto es solo para demostración. Cualquier mejora o corrección es bienvenida mediante pull requests.
