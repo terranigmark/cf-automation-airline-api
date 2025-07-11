@@ -66,6 +66,7 @@ Para poblar la base de datos en memoria con datos ficticios puedes ejecutar el s
 ```bash
 python seed.py
 ```
+
 Este script utiliza la biblioteca **Faker** para generar un conjunto reducido de datos por defecto:
 - 20 aeropuertos
 - 10 aeronaves
