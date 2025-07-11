@@ -90,7 +90,7 @@ def seed_bookings(n=7000):
                 {
                     "full_name": faker.name(),
                     "passport": faker.bothify(text="????????"),
-                    "seat": None,
+                    "seat": f"{random.randint(1, 45)}{random.choice('ABCDEF')}",
                 }
             ],
         }
