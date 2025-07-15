@@ -24,7 +24,7 @@ def get_airport(iata_code: str):
     ap = models.DB["airports"].get(iata_code)
     if not ap:
         raise HTTPException(status_code=404)
-    return glitches.maybe_corrupt_airport(dict(ap))
+    return ap
 
 @router.put("/{iata_code}", response_model=schemas.AirportOut)
 def update_airport(iata_code: str, patch: schemas.AirportCreate, _: dict = Depends(deps.require_admin)):

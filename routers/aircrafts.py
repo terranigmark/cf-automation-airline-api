@@ -22,7 +22,7 @@ def get_aircraft(aircraft_id: str):
     ac = models.DB["aircrafts"].get(aircraft_id)
     if not ac:
         raise HTTPException(status_code=404)
-    return glitches.maybe_corrupt_aircraft(dict(ac))
+    return ac
 
 @router.put("/{aircraft_id}", response_model=schemas.AircraftOut)
 def update_aircraft(aircraft_id: str, patch: schemas.AircraftCreate, _: dict = Depends(deps.require_admin)):
@@ -30,7 +30,7 @@ def update_aircraft(aircraft_id: str, patch: schemas.AircraftCreate, _: dict = D
     if not ac:
         raise HTTPException(status_code=404)
     ac.update(patch.dict())  # BUG: may overwrite with nulls
-    return glitches.maybe_corrupt_aircraft(dict(ac))
+    return ac
 
 @router.delete("/{aircraft_id}", status_code=204)
 def delete_aircraft(aircraft_id: str, _: dict = Depends(deps.require_admin)):

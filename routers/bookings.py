@@ -16,7 +16,7 @@ def create_booking(bk: schemas.BookingCreate, user: dict = Depends(deps.get_curr
     data = bk.dict()
     data |= {"id": bid, "user_id": user["id"], "status": models.BookingStatus.draft}
     models.DB["bookings"][bid] = data
-    return glitches.maybe_corrupt_booking(data)
+    return data
 
 @router.get("", response_model=list[schemas.BookingOut])
 def list_bookings(p: dict = Depends(deps.pagination), user: dict = Depends(deps.get_current_user)):
@@ -24,7 +24,7 @@ def list_bookings(p: dict = Depends(deps.pagination), user: dict = Depends(deps.
     if user["role"] != models.Role.admin:
         items = [b for b in items if b["user_id"] == user["id"]]
     items = list(items)[p["skip"]:p["skip"]+p["limit"]]
-    return [glitches.maybe_corrupt_booking(dict(b)) for b in items]
+    return items
 
 @router.get("/{booking_id}", response_model=schemas.BookingOut)
 def get_booking(booking_id: str, user: dict = Depends(deps.get_current_user)):
@@ -45,7 +45,7 @@ def update_booking(booking_id: str, patch: dict, user: dict = Depends(deps.get_c
     if bk["user_id"] != user["id"]:
         raise HTTPException(status_code=403)
     bk.update(patch)
-    return glitches.maybe_corrupt_booking(dict(bk))
+    return bk
 
 @router.delete("/{booking_id}", status_code=204)
 def cancel_booking(booking_id: str, user: dict = Depends(deps.get_current_user)):

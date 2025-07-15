@@ -23,7 +23,7 @@ def pay(pay: schemas.PaymentCreate, user: dict = Depends(deps.get_current_user))
         "status": models.PaymentStatus.success,  # simplified mock
     }
     bk["status"] = models.BookingStatus.paid
-    return glitches.maybe_corrupt_payment(models.DB["payments"][pid])
+    return pid
 
 @router.get("/{payment_id}", response_model=schemas.PaymentOut)
 def get_payment(payment_id: str, user: dict = Depends(deps.get_current_user)):
@@ -33,4 +33,4 @@ def get_payment(payment_id: str, user: dict = Depends(deps.get_current_user)):
     bk = models.DB["bookings"].get(payment["booking_id"])
     if user["role"] != models.Role.admin and bk["user_id"] != user["id"]:
         raise HTTPException(status_code=403)
-    return glitches.maybe_corrupt_payment(dict(payment))
+    return payment

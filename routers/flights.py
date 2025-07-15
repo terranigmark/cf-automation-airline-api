@@ -16,7 +16,7 @@ def create_flight(
     capacity = models.DB["aircrafts"][flight.aircraft_id]["capacity"]
     data |= {"id": fid, "available_seats": capacity}
     models.DB["flights"][fid] = data
-    return glitches.maybe_corrupt_flight(data)
+    return data
 
 @router.get("", response_model=list[schemas.FlightOut])
 def search_flights(
@@ -46,7 +46,7 @@ def get_flight(flight_id: str):
     fl = models.DB["flights"].get(flight_id)
     if not fl:
         raise HTTPException(status_code=404)
-    return glitches.maybe_corrupt_flight(dict(fl))
+    return fl
 
 @router.put("/{flight_id}", response_model=schemas.FlightOut)
 def update_flight(flight_id: str, patch: schemas.FlightCreate, _: dict = Depends(deps.require_admin)):
@@ -60,7 +60,7 @@ def update_flight(flight_id: str, patch: schemas.FlightCreate, _: dict = Depends
         capacity = models.DB["aircrafts"][changes["aircraft_id"]]["capacity"]
         fl["available_seats"] = capacity
     fl.update(changes)
-    return glitches.maybe_corrupt_flight(dict(fl))
+    return fl
 
 @router.delete("/{flight_id}", status_code=204)
 def delete_flight(flight_id: str, _: dict = Depends(deps.require_admin)):
