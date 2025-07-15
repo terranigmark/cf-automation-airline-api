@@ -17,7 +17,7 @@ def list_airports(p: dict = Depends(deps.pagination)):
     if bug:
         return bug
     airports = list(models.DB["airports"].values())[p["skip"]:p["skip"]+p["limit"]]
-    return [glitches.maybe_corrupt_airport(dict(a)) for a in airports]
+    return airports
 
 @router.get("/{iata_code}", response_model=schemas.AirportOut)
 def get_airport(iata_code: str):
