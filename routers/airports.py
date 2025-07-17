@@ -13,9 +13,6 @@ def create_airport(airport: schemas.AirportCreate, _: dict = Depends(deps.requir
 
 @router.get("", response_model=list[schemas.AirportOut])
 def list_airports(p: dict = Depends(deps.pagination)):
-    bug = glitches.maybe_bug()
-    if bug:
-        return bug
     airports = list(models.DB["airports"].values())[p["skip"]:p["skip"]+p["limit"]]
     return airports
 
