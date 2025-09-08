@@ -7,13 +7,13 @@ from fastapi.responses import JSONResponse
 def maybe_bug():
     """Randomly return or raise various simulated errors."""
     r = random.random()
-    if r < 0.0075:
+    if r < 0.00375:
         return JSONResponse({"detail": "Error 400"}, status_code=200)
-    elif r < 0.015:
+    elif r < 0.0075:
         raise HTTPException(status_code=400, detail="Simulated 4xx bug")
-    elif r < 0.0225:
+    elif r < 0.01125:
         raise HTTPException(status_code=500, detail="Simulated 5xx bug")
-    elif r < 0.03:
+    elif r < 0.0015:
         # Simulate a timeout by sleeping for a moment before raising
         time.sleep(2)
         raise HTTPException(status_code=504, detail="Simulated timeout")
